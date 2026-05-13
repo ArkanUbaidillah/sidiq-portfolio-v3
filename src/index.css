@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #000000;
+  --color-emerald: #10b981;
+  --color-emerald-dim: #10b98133;
+  --color-emerald-mid: #10b98166;
+  --color-surface: #0a0a0a;
+  --color-surface-2: #111111;
+  --color-border: #1a1a1a;
+  --color-text: #e5e5e5;
+  --color-text-muted: #666666;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 2px;
+}
+
+/* Scanline effect overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Bento card base */
+.bento-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-card:hover {
+  border-color: var(--color-emerald);
+  box-shadow: 0 0 20px var(--color-emerald-dim), inset 0 0 20px rgba(16,185,129,0.03);
+}
+
+/* Emerald glow text */
+.text-glow {
+  text-shadow: 0 0 10px #10b981, 0 0 30px #10b98166;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+/* Noise texture */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+  border-radius: inherit;
+}
+
+/* Grid dot pattern */
+.dot-grid {
+  background-image: radial-gradient(circle, #10b98122 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Emerald gradient border animation */
+@keyframes borderRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animated-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(from 0deg, transparent 0deg, #10b981 60deg, transparent 120deg);
+  animation: borderRotate 3s linear infinite;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.animated-border > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Prose for report content */
+.report-content h1 { font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0 0.5rem; }
+.report-content h2 { font-size: 1.25rem; font-weight: 600; color: #e5e5e5; margin: 1rem 0 0.5rem; }
+.report-content h3 { font-size: 1.1rem; font-weight: 600; color: #a3a3a3; margin: 0.75rem 0 0.25rem; }
+.report-content p { margin-bottom: 0.75rem; line-height: 1.7; color: #d4d4d4; }
+.report-content pre { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+.report-content code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #10b981; }
+.report-content ul, .report-content ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.report-content li { margin-bottom: 0.25rem; color: #d4d4d4; }
+.report-content blockquote { border-left: 3px solid #10b981; padding-left: 1rem; color: #a3a3a3; margin: 1rem 0; }
