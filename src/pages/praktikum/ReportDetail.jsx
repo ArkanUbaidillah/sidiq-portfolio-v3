@@ -6,6 +6,17 @@ import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
+function getReportBlocks(report) {
+  if (Array.isArray(report.blocks) && report.blocks.length > 0) {
+    return report.blocks;
+  }
+
+  const legacyContent =
+    report.content || report.html_content || report.body || report.description;
+
+  return legacyContent ? [{ type: "text", content: legacyContent }] : [];
+}
+
 function BlockRenderer({ block }) {
   if (block.type === "text") {
     return (
@@ -91,7 +102,7 @@ export default function ReportDetail() {
     );
   }
 
-  const blocks = report.blocks || [];
+  const blocks = getReportBlocks(report);
 
   return (
     <div className="min-h-screen bg-black">

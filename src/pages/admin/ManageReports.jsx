@@ -27,6 +27,17 @@ const sortReportsByWeek = (items) =>
 
 const STORAGE_BUCKET = "media";
 
+function getReportBlocks(report) {
+  if (Array.isArray(report.blocks) && report.blocks.length > 0) {
+    return report.blocks;
+  }
+
+  const legacyContent =
+    report.content || report.html_content || report.body || report.description;
+
+  return legacyContent ? [{ type: "text", content: legacyContent }] : [];
+}
+
 // Block editor components
 function TextBlockEditor({ block, onChange, onDelete }) {
   return (
@@ -207,7 +218,7 @@ export default function ManageReports() {
       week_number: report.week_number,
       course_id: report.course_id,
     });
-    setBlocks(report.blocks || []);
+    setBlocks(getReportBlocks(report));
   };
 
   const handleSave = async () => {
