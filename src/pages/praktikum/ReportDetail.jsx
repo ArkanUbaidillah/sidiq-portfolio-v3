@@ -6,19 +6,72 @@ import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
+function parseJsonLike(value) {
+  if (typeof value !== "string") return value;
+
+  const trimmed = value.trim();
+  if (!trimmed.startsWith("[") && !trimmed.startsWith("{")) return value;
+
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return value;
+  }
+}
+
+function normalizeBlock(block) {
+  if (!block) return null;
+
+  if (typeof block === "string") {
+    return { type: "text", content: block };
+  }
+
+  if (block.type === "image") {
+    const url = block.url || block.value || block.src || block.image_url;
+    return url
+      ? { type: "image", url, caption: block.caption || block.title || "" }
+      : null;
+  }
+
+  const content =
+    block.content || block.value || block.text || block.html || block.body;
+
+  if (content) {
+    return { type: "text", content: String(content) };
+  }
+
+  return null;
+}
+
+function normalizeBlocks(value) {
+  const parsed = parseJsonLike(value);
+  const items = Array.isArray(parsed) ? parsed : [parsed];
+  return items.map(normalizeBlock).filter(Boolean);
+}
+
 function getReportBlocks(report) {
-  if (Array.isArray(report.blocks) && report.blocks.length > 0) {
-    return report.blocks;
+  const blocks = normalizeBlocks(report.blocks);
+  if (blocks.length > 0) {
+    return blocks;
   }
 
   const legacyContent =
     report.content || report.html_content || report.body || report.description;
 
-  return legacyContent ? [{ type: "text", content: legacyContent }] : [];
+  return normalizeBlocks(legacyContent);
 }
 
 function BlockRenderer({ block }) {
   if (block.type === "text") {
+    const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(block.content);
+    if (!looksLikeHtml) {
+      return (
+        <div className="report-content mb-6 whitespace-pre-line">
+          {block.content}
+        </div>
+      );
+    }
+
     return (
       <div
         className="report-content mb-6"
