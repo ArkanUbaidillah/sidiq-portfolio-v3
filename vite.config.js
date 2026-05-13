@@ -4,5 +4,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/sidiq/", // Gunakan path absolut untuk subfolder agar routing lancar
+  base: "/", // Subdomain deployment: https://sidiq.ifportofolio.com/
 });
