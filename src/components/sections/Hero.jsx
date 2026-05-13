@@ -108,7 +108,7 @@ export default function Hero() {
               <div className="relative w-56 h-56 md:w-72 md:h-72 rounded-2xl overflow-hidden border border-[#222] shadow-2xl">
                 {/* Placeholder - replace src with actual photo */}
                 <img
-                  src="/sidiq/sidiq.jpeg"
+                  src="/sidiq.jpeg"
                   alt="Muhamad Sidiq"
                   className="w-full h-full object-cover"
                 />
