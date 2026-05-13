@@ -6,6 +6,9 @@ import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 
+const sortReportsByWeek = (items) =>
+  [...items].sort((a, b) => (a.week_number ?? 0) - (b.week_number ?? 0));
+
 export default function CourseDetail() {
   const { courseSlug } = useParams();
   const [course, setCourse] = useState(null);
@@ -25,9 +28,8 @@ export default function CourseDetail() {
         const { data: reportsData } = await supabase
           .from("lab_reports")
           .select("*")
-          .eq("course_id", courseData.id)
-          .order("week_number", { ascending: true });
-        setReports(reportsData || []);
+          .eq("course_id", courseData.id);
+        setReports(sortReportsByWeek(reportsData || []));
       }
       setLoading(false);
     };
@@ -115,7 +117,7 @@ export default function CourseDetail() {
                   >
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-xs text-sky-500 w-14 shrink-0">
-                        Week {report.week_number}
+                        Week {report.week_number ?? "-"}
                       </span>
                       <div>
                         <p className="font-display font-medium text-white group-hover:text-sky-500 transition-colors">

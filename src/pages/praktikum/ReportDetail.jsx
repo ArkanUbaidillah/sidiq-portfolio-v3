@@ -117,7 +117,7 @@ export default function ReportDetail() {
               </span>
               <span className="text-[#222]">·</span>
               <span className="font-mono text-xs text-[#444]">
-                Week {report.week_number}
+                Week {report.week_number ?? "-"}
               </span>
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">

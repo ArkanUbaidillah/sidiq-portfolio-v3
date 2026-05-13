@@ -33,19 +33,19 @@ Buka http://localhost:5173
 ### B. Buat Storage Bucket untuk Gambar
 
 1. Supabase Dashboard → **Storage** → **New Bucket**
-2. Nama: `images`
+2. Nama: `media`
 3. Centang **Public bucket** → Create
 4. Pergi ke **SQL Editor**, jalankan:
 
 ```sql
-CREATE POLICY "images_public_read" ON storage.objects
-  FOR SELECT USING (bucket_id = 'images');
+CREATE POLICY "media_public_read" ON storage.objects
+  FOR SELECT USING (bucket_id = 'media');
 
-CREATE POLICY "images_admin_upload" ON storage.objects
-  FOR INSERT WITH CHECK (bucket_id = 'images' AND auth.role() = 'authenticated');
+CREATE POLICY "media_admin_upload" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'media' AND auth.role() = 'authenticated');
 
-CREATE POLICY "images_admin_delete" ON storage.objects
-  FOR DELETE USING (bucket_id = 'images' AND auth.role() = 'authenticated');
+CREATE POLICY "media_admin_delete" ON storage.objects
+  FOR DELETE USING (bucket_id = 'media' AND auth.role() = 'authenticated');
 ```
 
 ### C. Buat Admin User

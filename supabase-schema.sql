@@ -23,6 +23,13 @@ CREATE TABLE IF NOT EXISTS public.lab_reports (
   UNIQUE(course_id, slug)
 );
 
+-- Ensure existing databases created from older schema versions get these columns too.
+ALTER TABLE public.lab_reports
+  ADD COLUMN IF NOT EXISTS week_number INTEGER NOT NULL DEFAULT 1;
+
+ALTER TABLE public.lab_reports
+  ADD COLUMN IF NOT EXISTS blocks JSONB NOT NULL DEFAULT '[]'::jsonb;
+
 -- 3. PROJECTS
 CREATE TABLE IF NOT EXISTS public.projects (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -97,20 +104,20 @@ CREATE POLICY "certificates_admin_all" ON public.certificates
 -- ============================================
 --  STORAGE BUCKET untuk upload gambar
 -- ============================================
--- Jalankan ini setelah membuat bucket 'images' di Supabase Dashboard > Storage
+-- Jalankan ini setelah membuat bucket 'media' di Supabase Dashboard > Storage
 
 -- INSERT INTO storage.buckets (id, name, public)
--- VALUES ('images', 'images', true)
+-- VALUES ('media', 'media', true)
 -- ON CONFLICT DO NOTHING;
 
--- CREATE POLICY "images_public_read" ON storage.objects
---   FOR SELECT USING (bucket_id = 'images');
+-- CREATE POLICY "media_public_read" ON storage.objects
+--   FOR SELECT USING (bucket_id = 'media');
 
--- CREATE POLICY "images_admin_upload" ON storage.objects
---   FOR INSERT WITH CHECK (bucket_id = 'images' AND auth.role() = 'authenticated');
+-- CREATE POLICY "media_admin_upload" ON storage.objects
+--   FOR INSERT WITH CHECK (bucket_id = 'media' AND auth.role() = 'authenticated');
 
--- CREATE POLICY "images_admin_delete" ON storage.objects
---   FOR DELETE USING (bucket_id = 'images' AND auth.role() = 'authenticated');
+-- CREATE POLICY "media_admin_delete" ON storage.objects
+--   FOR DELETE USING (bucket_id = 'media' AND auth.role() = 'authenticated');
 
 -- ============================================
 --  INDEX untuk performa

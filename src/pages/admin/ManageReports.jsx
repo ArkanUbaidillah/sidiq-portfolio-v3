@@ -22,6 +22,11 @@ function slugify(str) {
     .replace(/[^a-z0-9-]/g, "");
 }
 
+const sortReportsByWeek = (items) =>
+  [...items].sort((a, b) => (a.week_number ?? 0) - (b.week_number ?? 0));
+
+const STORAGE_BUCKET = "media";
+
 // Block editor components
 function TextBlockEditor({ block, onChange, onDelete }) {
   return (
@@ -57,9 +62,13 @@ function ImageBlockEditor({ block, onChange, onDelete }) {
     setUploading(true);
     const ext = file.name.split(".").pop();
     const path = `reports/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("images").upload(path, file);
+    const { error } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(path, file);
     if (!error) {
-      const { data } = supabase.storage.from("images").getPublicUrl(path);
+      const { data } = supabase.storage
+        .from(STORAGE_BUCKET)
+        .getPublicUrl(path);
       onChange({ ...block, url: data.publicUrl });
     }
     setUploading(false);
@@ -158,8 +167,7 @@ export default function ManageReports() {
       .from("lab_reports")
       .select("*")
       .eq("course_id", selectedCourse)
-      .order("week_number")
-      .then(({ data }) => setReports(data || []));
+      .then(({ data }) => setReports(sortReportsByWeek(data || [])));
   }, [selectedCourse]);
 
   const addBlock = (type) => {
@@ -231,9 +239,8 @@ export default function ManageReports() {
       const { data } = await supabase
         .from("lab_reports")
         .select("*")
-        .eq("course_id", selectedCourse)
-        .order("week_number");
-      setReports(data || []);
+        .eq("course_id", selectedCourse);
+      setReports(sortReportsByWeek(data || []));
     }
     setSaving(false);
   };
@@ -308,7 +315,7 @@ export default function ManageReports() {
                       {report.title}
                     </p>
                     <p className="font-mono text-xs text-[#333]">
-                      Week {report.week_number}
+                      Week {report.week_number ?? "-"}
                     </p>
                   </div>
                   <button
