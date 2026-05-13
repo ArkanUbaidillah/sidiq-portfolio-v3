@@ -1,27 +1,30 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./index.css";
 
-import Home from './pages/Home'
-import AdminLogin from './pages/AdminLogin'
-import AdminLayout from './pages/admin/AdminLayout'
-import Dashboard from './pages/admin/Dashboard'
-import ManageCourses from './pages/admin/ManageCourses'
-import ManageReports from './pages/admin/ManageReports'
-import ManageProjects from './pages/admin/ManageProjects'
-import ManageCertificates from './pages/admin/ManageCertificates'
-import CourseDetail from './pages/praktikum/CourseDetail'
-import ReportDetail from './pages/praktikum/ReportDetail'
+import Home from "./pages/Home";
+import AdminLogin from "./pages/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import ManageCourses from "./pages/admin/ManageCourses";
+import ManageReports from "./pages/admin/ManageReports";
+import ManageProjects from "./pages/admin/ManageProjects";
+import ManageCertificates from "./pages/admin/ManageCertificates";
+import CourseDetail from "./pages/praktikum/CourseDetail";
+import ReportDetail from "./pages/praktikum/ReportDetail";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/sidiq">
       <Routes>
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/praktikum/:courseSlug" element={<CourseDetail />} />
-        <Route path="/praktikum/:courseSlug/:reportSlug" element={<ReportDetail />} />
+        <Route
+          path="/praktikum/:courseSlug/:reportSlug"
+          element={<ReportDetail />}
+        />
 
         {/* Admin */}
         <Route path="/sidiq-admin" element={<AdminLogin />} />
@@ -37,5 +40,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
-)
+  </React.StrictMode>,
+);

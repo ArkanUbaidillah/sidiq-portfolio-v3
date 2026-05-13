@@ -68,8 +68,8 @@ function ImageBlockEditor({ block, onChange, onDelete }) {
   return (
     <div className="relative border border-[#1a1a1a] rounded-xl bg-[#0a0a0a] p-3">
       <div className="flex items-center gap-2 mb-3">
-        <Image size={12} className="text-blue-400" />
-        <span className="font-mono text-xs text-blue-400">Image Block</span>
+        <Image size={12} className="text-sky-500" />
+        <span className="font-mono text-xs text-sky-500">Image Block</span>
         <button
           onClick={onDelete}
           className="ml-auto text-[#333] hover:text-red-500 transition-colors"
@@ -413,7 +413,7 @@ export default function ManageReports() {
                 </button>
                 <button
                   onClick={() => addBlock("image")}
-                  className="flex items-center gap-1.5 px-3 py-1.5 border border-[#1a1a1a] rounded-xl font-mono text-xs text-[#555] hover:border-blue-400 hover:text-blue-400 transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 border border-[#1a1a1a] rounded-xl font-mono text-xs text-[#555] hover:border-sky-500 hover:text-sky-500 transition-all"
                 >
                   <Image size={12} /> Upload Image
                 </button>
