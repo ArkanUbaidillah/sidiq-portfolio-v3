@@ -46,6 +46,10 @@ CREATE TABLE IF NOT EXISTS public.certificates (
   created_at     TIMESTAMPTZ DEFAULT now()
 );
 
+-- Ensure existing databases created from older schema versions get this column too.
+ALTER TABLE public.certificates
+  ADD COLUMN IF NOT EXISTS issued_date DATE;
+
 -- ============================================
 --  ROW LEVEL SECURITY (RLS)
 -- ============================================

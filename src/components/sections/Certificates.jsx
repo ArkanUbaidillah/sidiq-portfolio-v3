@@ -11,8 +11,10 @@ export default function Certificates() {
     supabase
       .from("certificates")
       .select("*")
-      .order("issued_date", { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Failed to load certificates:", error.message);
+        }
         setCertificates(data || []);
         setLoading(false);
       });
