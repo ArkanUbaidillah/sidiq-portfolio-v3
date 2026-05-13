@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Github, Instagram, MessageCircle } from "lucide-react";
 
 export default function Hero() {
+  const profilePhoto = `${import.meta.env.BASE_URL}sidiq.jpeg`;
+
   return (
     <section
       id="hero"
@@ -108,7 +110,7 @@ export default function Hero() {
               <div className="relative w-56 h-56 md:w-72 md:h-72 rounded-2xl overflow-hidden border border-[#222] shadow-2xl">
                 {/* Placeholder - replace src with actual photo */}
                 <img
-                  src="/sidiq.jpeg"
+                  src={profilePhoto}
                   alt="Muhamad Sidiq"
                   className="w-full h-full object-cover"
                 />

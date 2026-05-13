@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Menu, X, Terminal } from "lucide-react";
 
 const navLinks = [
@@ -61,12 +62,12 @@ export default function Navbar() {
           </ul>
 
           {/* CTA */}
-          <a
-            href="/sidiq-admin"
+          <Link
+            to="/sidiq-admin"
             className="hidden md:flex items-center gap-1 font-mono text-xs text-white bg-sky-600 px-3 py-1.5 rounded-lg hover:bg-sky-500 transition-colors duration-200"
           >
             Admin
-          </a>
+          </Link>
 
           {/* Hamburger */}
           <button
@@ -102,12 +103,12 @@ export default function Navbar() {
                 </li>
               ))}
               <li>
-                <a
-                  href="/sidiq-admin"
+                <Link
+                  to="/sidiq-admin"
                   className="block text-center font-mono text-sm text-white bg-sky-600 px-4 py-2 rounded-lg"
                 >
                   Admin Panel
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.div>
