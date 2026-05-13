@@ -308,16 +308,20 @@ export default function ManageReports() {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="font-display text-xl font-bold text-white mb-6 flex items-center gap-2">
-        <FlaskConical size={20} className="text-sky-500" /> Laporan Praktikum
-      </h1>
+    <div className="p-4 md:p-8">
+      <div className="mx-auto max-w-7xl">
+      <div className="mb-6">
+        <p className="text-sm font-bold text-sky-200">Lab Publishing</p>
+        <h1 className="mt-1 flex items-center gap-2 font-display text-3xl font-extrabold text-white">
+          <FlaskConical size={24} className="text-sky-200" /> Laporan Praktikum
+        </h1>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Course selector + report list */}
         <div>
           <div className="bento-card p-4 mb-4">
-            <label className="font-mono text-xs text-[#444] mb-2 block">
+            <label className="mb-2 block text-xs font-bold uppercase text-slate-500">
               Pilih Mata Kuliah
             </label>
             <select
@@ -326,7 +330,7 @@ export default function ManageReports() {
                 setSelectedCourse(e.target.value);
                 setEditing(null);
               }}
-              className="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-3 py-2 font-mono text-sm text-white focus:outline-none focus:border-sky-500"
+              className="w-full px-3 py-2.5 text-sm"
             >
               <option value="">-- Pilih --</option>
               {courses.map((c) => (
@@ -339,37 +343,37 @@ export default function ManageReports() {
 
           {selectedCourse && (
             <div className="bento-card overflow-hidden">
-              <div className="p-3 border-b border-[#0f0f0f] flex items-center justify-between">
-                <p className="font-mono text-xs text-[#444]">
+              <div className="flex items-center justify-between border-b border-white/10 p-3">
+                <p className="text-xs font-bold text-slate-500">
                   {reports.length} laporan
                 </p>
                 <button
                   onClick={startNew}
-                  className="flex items-center gap-1 font-mono text-xs text-white bg-sky-600 px-2.5 py-1 rounded-lg hover:bg-sky-500 transition-colors"
+                  className="flex items-center gap-1 rounded-lg bg-sky-400 px-3 py-1.5 text-xs font-bold text-slate-950 transition-colors hover:bg-sky-300"
                 >
                   <Plus size={12} /> Baru
                 </button>
               </div>
               {reports.length === 0 && (
-                <div className="p-6 text-center font-mono text-xs text-[#333]">
+                <div className="p-6 text-center text-xs font-semibold text-slate-500">
                   Belum ada laporan
                 </div>
               )}
               {reports.map((report) => (
                 <div
                   key={report.id}
-                  className={`flex items-center justify-between p-3 border-b border-[#0a0a0a] cursor-pointer transition-colors ${
+                  className={`flex cursor-pointer items-center justify-between border-b border-white/10 p-3 transition-colors ${
                     editing === report.id
-                      ? "bg-sky-500/5 border-l-2 border-l-sky-500"
-                      : "hover:bg-[#0a0a0a]"
+                      ? "border-l-2 border-l-sky-300 bg-sky-400/10"
+                      : "hover:bg-white/[0.03]"
                   }`}
                   onClick={() => startEdit(report)}
                 >
                   <div>
-                    <p className="font-mono text-xs text-white">
+                    <p className="text-xs font-bold text-white">
                       {report.title}
                     </p>
-                    <p className="font-mono text-xs text-[#333]">
+                    <p className="text-xs font-semibold text-slate-500">
                       Week {report.week_number ?? "-"}
                     </p>
                   </div>
@@ -378,7 +382,7 @@ export default function ManageReports() {
                       e.stopPropagation();
                       handleDelete(report.id);
                     }}
-                    className="p-1 text-[#333] hover:text-red-500 transition-colors"
+                    className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
                   >
                     <Trash2 size={12} />
                   </button>
@@ -396,8 +400,8 @@ export default function ManageReports() {
               animate={{ opacity: 1, y: 0 }}
               className="bento-card p-5"
             >
-              <h2 className="font-mono text-xs text-sky-500 mb-4">
-                {editing === "new" ? "// Laporan Baru" : "// Edit Laporan"}
+              <h2 className="mb-4 font-display text-lg font-bold text-white">
+                {editing === "new" ? "Laporan Baru" : "Edit Laporan"}
               </h2>
 
               <div className="flex gap-3 mb-4">
@@ -406,7 +410,7 @@ export default function ManageReports() {
                   placeholder="Judul laporan"
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className="flex-1 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-3 py-2 font-mono text-sm text-white placeholder-[#333] focus:outline-none focus:border-sky-500"
+                  className="flex-1 px-3 py-2.5 text-sm"
                 />
                 <input
                   type="number"
@@ -415,7 +419,7 @@ export default function ManageReports() {
                   onChange={(e) =>
                     setForm({ ...form, week_number: parseInt(e.target.value) })
                   }
-                  className="w-20 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-3 py-2 font-mono text-sm text-white focus:outline-none focus:border-sky-500"
+                  className="w-20 px-3 py-2.5 text-sm"
                   placeholder="Week"
                 />
               </div>
@@ -469,13 +473,13 @@ export default function ManageReports() {
               <div className="flex gap-2 mb-5">
                 <button
                   onClick={() => addBlock("text")}
-                  className="flex items-center gap-1.5 px-3 py-1.5 border border-[#1a1a1a] rounded-xl font-mono text-xs text-[#555] hover:border-sky-500 hover:text-sky-500 transition-all"
+                  className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-slate-400 transition-all hover:border-sky-300/40 hover:text-white"
                 >
                   <Type size={12} /> Add Text
                 </button>
                 <button
                   onClick={() => addBlock("image")}
-                  className="flex items-center gap-1.5 px-3 py-1.5 border border-[#1a1a1a] rounded-xl font-mono text-xs text-[#555] hover:border-sky-500 hover:text-sky-500 transition-all"
+                  className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-slate-400 transition-all hover:border-sky-300/40 hover:text-white"
                 >
                   <Image size={12} /> Upload Image
                 </button>
@@ -486,18 +490,18 @@ export default function ManageReports() {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex items-center gap-2 px-5 py-2 bg-sky-600 text-white font-mono text-xs font-bold rounded-xl hover:bg-sky-500 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-lg bg-sky-400 px-5 py-2.5 text-xs font-bold text-slate-950 transition-colors hover:bg-sky-300 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Simpan Laporan"}
                 </button>
                 {saved && (
-                  <span className="flex items-center gap-1 font-mono text-xs text-sky-500">
+                  <span className="flex items-center gap-1 text-xs font-bold text-emerald-300">
                     <CheckCircle size={12} /> Tersimpan!
                   </span>
                 )}
                 <button
                   onClick={() => setEditing(null)}
-                  className="font-mono text-xs text-[#333] hover:text-white transition-colors"
+                  className="text-xs font-bold text-slate-500 transition-colors hover:text-white"
                 >
                   Batal
                 </button>
@@ -505,16 +509,17 @@ export default function ManageReports() {
             </motion.div>
           ) : (
             <div className="bento-card p-12 text-center">
-              <Eye size={24} className="text-[#222] mx-auto mb-3" />
-              <p className="font-mono text-sm text-[#333]">
+              <Eye size={24} className="mx-auto mb-3 text-slate-600" />
+              <p className="text-sm font-semibold text-slate-500">
                 Pilih laporan untuk diedit
               </p>
-              <p className="font-mono text-xs text-[#222] mt-1">
+              <p className="mt-1 text-xs font-semibold text-slate-600">
                 atau klik "+ Baru" untuk membuat laporan
               </p>
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

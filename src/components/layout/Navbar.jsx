@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Menu, X, Terminal } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -31,29 +31,31 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`sticky top-0 z-50 w-full transition-all duration-300 border-b border-[#111] ${
-          scrolled ? "bg-black/80 backdrop-blur-md" : "bg-black"
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${
+          scrolled
+            ? "border-white/10 bg-[#080b12]/85 backdrop-blur-xl"
+            : "border-transparent bg-transparent"
         }`}
       >
-        <div className="flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Terminal size={18} className="text-sky-500" />
-            <span className="font-mono text-sm font-bold text-sky-500">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 text-sky-300">
+              <Sparkles size={17} />
+            </span>
+            <span className="font-display text-sm font-bold text-white">
               sidiq.dev
             </span>
           </div>
 
-          {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-8">
+          <ul className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <button
                   onClick={() => handleNav(link.href)}
-                  className="font-mono text-xs text-[#666] hover:text-sky-500 transition-colors duration-200 uppercase tracking-widest"
+                  className="font-sans text-xs font-semibold text-slate-400 transition-colors duration-200 hover:text-white"
                 >
                   {link.label}
                 </button>
@@ -61,17 +63,15 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* CTA */}
           <Link
             to="/sidiq-admin"
-            className="hidden md:flex items-center gap-1 font-mono text-xs text-white bg-sky-600 px-3 py-1.5 rounded-lg hover:bg-sky-500 transition-colors duration-200"
+            className="hidden rounded-lg border border-sky-400/30 bg-sky-400/10 px-4 py-2 font-sans text-xs font-bold text-sky-100 transition-colors duration-200 hover:bg-sky-400/20 md:flex"
           >
             Admin
           </Link>
 
-          {/* Hamburger */}
           <button
-            className="md:hidden text-sky-500 p-1"
+            className="rounded-lg border border-white/10 p-2 text-sky-200 md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -80,24 +80,23 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -14 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed top-[64px] left-0 right-0 z-40 bg-black border-b border-[#111] p-6"
+            className="fixed left-0 right-0 top-[68px] z-40 border-b border-white/10 bg-[#080b12]/95 p-6 backdrop-blur-xl"
           >
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <li key={link.label}>
                   <button
                     onClick={() => handleNav(link.href)}
-                    className="w-full text-left font-mono text-sm text-[#aaa] hover:text-sky-500 transition-colors py-2 border-b border-[#111] last:border-0"
+                    className="w-full border-b border-white/10 py-3 text-left font-sans text-sm font-semibold text-slate-300 transition-colors last:border-0 hover:text-white"
                   >
-                    <span className="text-sky-500 mr-2">›</span>
+                    <span className="mr-2 text-sky-300">/</span>
                     {link.label}
                   </button>
                 </li>
@@ -105,7 +104,7 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/sidiq-admin"
-                  className="block text-center font-mono text-sm text-white bg-sky-600 px-4 py-2 rounded-lg"
+                  className="mt-2 block rounded-lg bg-sky-400 px-4 py-2 text-center font-sans text-sm font-bold text-slate-950"
                 >
                   Admin Panel
                 </Link>

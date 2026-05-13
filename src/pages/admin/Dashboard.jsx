@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  FlaskConical,
-  FolderOpen,
   Award,
   BookOpen,
+  FolderOpen,
+  FlaskConical,
+  Plus,
   TrendingUp,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -46,78 +48,101 @@ export default function Dashboard() {
       label: "Mata Kuliah",
       value: stats.courses,
       icon: <BookOpen size={18} />,
-      color: "text-blue-400",
+      tone: "text-sky-200 bg-sky-400/10",
     },
     {
       label: "Laporan",
       value: stats.reports,
       icon: <FlaskConical size={18} />,
-      color: "text-sky-500",
+      tone: "text-emerald-200 bg-emerald-400/10",
     },
     {
       label: "Proyek",
       value: stats.projects,
       icon: <FolderOpen size={18} />,
-      color: "text-purple-400",
+      tone: "text-violet-200 bg-violet-400/10",
     },
     {
       label: "Sertifikat",
       value: stats.certificates,
       icon: <Award size={18} />,
-      color: "text-yellow-400",
+      tone: "text-amber-200 bg-amber-400/10",
     },
   ];
 
+  const actions = [
+    { label: "Tambah Mata Kuliah", href: "/sidiq-admin/courses" },
+    { label: "Buat Laporan", href: "/sidiq-admin/reports" },
+    { label: "Tambah Proyek", href: "/sidiq-admin/projects" },
+    { label: "Tambah Sertifikat", href: "/sidiq-admin/certificates" },
+  ];
+
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
+        className="mx-auto max-w-6xl"
       >
-        <div className="mb-8">
-          <p className="font-mono text-xs text-[#444] mb-1">Welcome back,</p>
-          <h1 className="font-display text-2xl font-bold text-white">
-            {user?.email?.split("@")[0] ?? "Admin"}
-          </h1>
+        <div className="mb-8 flex flex-col justify-between gap-4 rounded-lg border border-white/10 bg-white/[0.03] p-6 md:flex-row md:items-end">
+          <div>
+            <p className="mb-2 text-sm font-semibold text-sky-200">
+              Welcome back
+            </p>
+            <h1 className="font-display text-3xl font-extrabold text-white">
+              {user?.email?.split("@")[0] ?? "Admin"}
+            </h1>
+            <p className="mt-2 max-w-xl text-sm text-slate-400">
+              Kelola praktikum, proyek, dan sertifikat dari satu dashboard yang
+              lebih rapi.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 rounded-lg border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm font-semibold text-emerald-100">
+            <TrendingUp size={16} />
+            Live content
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {statCards.map((card, i) => (
             <motion.div
               key={card.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
+              transition={{ delay: i * 0.06 }}
               className="bento-card p-5"
             >
-              <div className={`${card.color} mb-3`}>{card.icon}</div>
-              <p className="font-mono text-2xl font-bold text-white">
+              <div
+                className={`mb-4 grid h-10 w-10 place-items-center rounded-lg ${card.tone}`}
+              >
+                {card.icon}
+              </div>
+              <p className="font-display text-3xl font-extrabold text-white">
                 {card.value}
               </p>
-              <p className="font-mono text-xs text-[#444] mt-1">{card.label}</p>
+              <p className="mt-1 text-sm font-semibold text-slate-400">
+                {card.label}
+              </p>
             </motion.div>
           ))}
         </div>
 
         <div className="bento-card p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={16} className="text-sky-500" />
-            <h2 className="font-mono text-sm text-white">Quick Actions</h2>
+          <div className="mb-5 flex items-center gap-2">
+            <Plus size={17} className="text-sky-200" />
+            <h2 className="font-display text-lg font-bold text-white">
+              Quick Actions
+            </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { label: "Tambah Mata Kuliah", href: "/sidiq-admin/courses" },
-              { label: "Buat Laporan", href: "/sidiq-admin/reports" },
-              { label: "Tambah Proyek", href: "/sidiq-admin/projects" },
-              { label: "Tambah Sertifikat", href: "/sidiq-admin/certificates" },
-            ].map((action) => (
-              <a
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+            {actions.map((action) => (
+              <Link
                 key={action.label}
-                href={action.href}
-                className="flex items-center justify-center text-center px-3 py-2.5 rounded-xl border border-[#111] font-mono text-xs text-[#666] hover:border-sky-500 hover:text-sky-500 transition-all"
+                to={action.href}
+                className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-center text-sm font-bold text-slate-300 transition-all hover:border-sky-300/40 hover:bg-sky-400/10 hover:text-white"
               >
                 {action.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

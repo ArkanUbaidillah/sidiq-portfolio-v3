@@ -5,7 +5,7 @@ import ProtectedRoute from '../../components/admin/ProtectedRoute'
 export default function AdminLayout() {
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-black">
+      <div className="flex min-h-screen">
         <AdminSidebar />
         <main className="flex-1 overflow-auto">
           <Outlet />

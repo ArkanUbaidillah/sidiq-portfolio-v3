@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, BookOpen } from "lucide-react";
+import { ArrowLeft, BookOpen, Calendar } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
@@ -51,9 +51,7 @@ function normalizeBlocks(value) {
 
 function getReportBlocks(report) {
   const blocks = normalizeBlocks(report.blocks);
-  if (blocks.length > 0) {
-    return blocks;
-  }
+  if (blocks.length > 0) return blocks;
 
   const legacyContent =
     report.content || report.html_content || report.body || report.description;
@@ -66,7 +64,7 @@ function BlockRenderer({ block }) {
     const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(block.content);
     if (!looksLikeHtml) {
       return (
-        <div className="report-content mb-6 whitespace-pre-line">
+        <div className="bento-card report-content whitespace-pre-line p-6">
           {block.content}
         </div>
       );
@@ -74,30 +72,49 @@ function BlockRenderer({ block }) {
 
     return (
       <div
-        className="report-content mb-6"
+        className="bento-card report-content p-6"
         dangerouslySetInnerHTML={{ __html: block.content }}
       />
     );
   }
+
   if (block.type === "image") {
     return (
-      <div className="mb-6">
-        <div className="rounded-xl overflow-hidden border border-[#1a1a1a]">
+      <figure className="bento-card p-2">
+        <div className="overflow-hidden rounded-lg">
           <img
             src={block.url}
             alt={block.caption || "Gambar laporan"}
-            className="w-full object-contain max-h-[500px] bg-[#0a0a0a]"
+            className="max-h-[620px] w-full bg-slate-950 object-contain"
           />
         </div>
         {block.caption && (
-          <p className="font-mono text-xs text-[#444] text-center mt-2">
+          <figcaption className="mt-2 text-center text-xs font-semibold text-slate-500">
             {block.caption}
-          </p>
+          </figcaption>
         )}
-      </div>
+      </figure>
     );
   }
+
   return null;
+}
+
+function ReportSkeleton() {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <main className="mx-auto max-w-3xl px-4 pb-20 pt-28">
+        <div className="mb-8 h-6 w-40 animate-pulse rounded-lg bg-white/10" />
+        <div className="mb-4 h-10 w-3/4 animate-pulse rounded-lg bg-white/10" />
+        <div className="mb-10 h-4 w-48 animate-pulse rounded-lg bg-white/10" />
+        <div className="space-y-4">
+          <div className="h-28 animate-pulse rounded-lg bg-white/10" />
+          <div className="h-64 animate-pulse rounded-lg bg-white/10" />
+        </div>
+      </main>
+    </div>
+  );
 }
 
 export default function ReportDetail() {
@@ -129,28 +146,25 @@ export default function ReportDetail() {
     fetchData();
   }, [courseSlug, reportSlug]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="font-mono text-sky-500 animate-pulse">
-          Loading report...
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <ReportSkeleton />;
 
   if (!report) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <p className="font-mono text-[#444] mb-4">Laporan tidak ditemukan.</p>
-          <Link
-            to={`/praktikum/${courseSlug}`}
-            className="font-mono text-xs text-sky-500 hover:underline"
-          >
-            ← Kembali ke daftar laporan
-          </Link>
-        </div>
+      <div className="min-h-screen">
+        <Navbar />
+        <main className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center px-4">
+          <div className="bento-card p-8 text-center">
+            <p className="mb-4 text-sm font-semibold text-slate-400">
+              Laporan tidak ditemukan.
+            </p>
+            <Link
+              to={`/praktikum/${courseSlug}`}
+              className="text-sm font-bold text-sky-200 hover:text-white"
+            >
+              Kembali ke daftar laporan
+            </Link>
+          </div>
+        </main>
       </div>
     );
   }
@@ -158,38 +172,37 @@ export default function ReportDetail() {
   const blocks = getReportBlocks(report);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <Navbar />
-      <main className="max-w-3xl mx-auto px-4 pt-28 pb-20">
+      <main className="mx-auto max-w-3xl px-4 pb-20 pt-28">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <Link
             to={`/praktikum/${courseSlug}`}
-            className="flex items-center gap-2 font-mono text-xs text-[#444] hover:text-sky-500 transition-colors mb-8"
+            className="mb-8 flex items-center gap-2 text-sm font-semibold text-slate-400 transition-colors hover:text-white"
           >
             <ArrowLeft size={14} /> Kembali ke {course?.name}
           </Link>
 
-          {/* Report header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-3">
-              <BookOpen size={14} className="text-sky-500" />
-              <span className="font-mono text-xs text-sky-500">
+          <div className="bento-card mb-8 p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <BookOpen size={14} className="text-sky-200" />
+              <span className="text-xs font-bold text-sky-200">
                 {course?.name}
               </span>
-              <span className="text-[#222]">·</span>
-              <span className="font-mono text-xs text-[#444]">
+              <span className="text-slate-600">/</span>
+              <span className="text-xs font-semibold text-slate-400">
                 Week {report.week_number ?? "-"}
               </span>
             </div>
-            <h1 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">
+            <h1 className="mb-3 font-display text-3xl font-extrabold text-white md:text-4xl">
               {report.title}
             </h1>
-            <div className="flex items-center gap-2 text-[#333]">
+            <div className="flex items-center gap-2 text-slate-500">
               <Calendar size={12} />
-              <span className="font-mono text-xs">
+              <span className="text-xs font-semibold">
                 {report.created_at
                   ? new Date(report.created_at).toLocaleDateString("id-ID", {
                       weekday: "long",
@@ -202,12 +215,9 @@ export default function ReportDetail() {
             </div>
           </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-sky-500/50 via-sky-500/20 to-transparent mb-8" />
-
-          {/* Blocks */}
-          <div>
+          <div className="space-y-6">
             {blocks.length === 0 ? (
-              <p className="font-mono text-sm text-[#444]">
+              <p className="bento-card p-6 text-sm font-semibold text-slate-400">
                 Laporan ini belum memiliki konten.
               </p>
             ) : (

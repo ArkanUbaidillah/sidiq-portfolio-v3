@@ -55,19 +55,23 @@ export default function ManageCourses() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        className="mx-auto max-w-6xl"
       >
-        <h1 className="font-display text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <BookOpen size={20} className="text-sky-500" /> Mata Kuliah
-        </h1>
+        <div className="mb-6">
+          <p className="text-sm font-bold text-sky-200">Content Library</p>
+          <h1 className="mt-1 flex items-center gap-2 font-display text-3xl font-extrabold text-white">
+            <BookOpen size={24} className="text-sky-200" /> Mata Kuliah
+          </h1>
+        </div>
 
         {/* Form */}
         <div className="bento-card p-5 mb-6">
-          <h2 className="font-mono text-xs text-sky-500 mb-4">
-            // Tambah Mata Kuliah
+          <h2 className="mb-4 font-display text-lg font-bold text-white">
+            Tambah Mata Kuliah
           </h2>
           <form onSubmit={handleAdd} className="flex flex-col gap-3">
             <input
@@ -76,7 +80,7 @@ export default function ManageCourses() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
-              className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-4 py-2.5 font-mono text-sm text-white placeholder-[#333] focus:outline-none focus:border-sky-500 transition-colors"
+              className="px-4 py-3 text-sm"
             />
             <input
               type="text"
@@ -85,18 +89,18 @@ export default function ManageCourses() {
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-4 py-2.5 font-mono text-sm text-white placeholder-[#333] focus:outline-none focus:border-sky-500 transition-colors"
+              className="px-4 py-3 text-sm"
             />
             <div className="flex items-center gap-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white font-mono text-xs font-bold rounded-xl hover:bg-sky-500 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-sky-400 px-4 py-2.5 text-xs font-bold text-slate-950 transition-colors hover:bg-sky-300 disabled:opacity-50"
               >
                 <Plus size={14} /> Tambah
               </button>
               {saved && (
-                <span className="flex items-center gap-1 font-mono text-xs text-sky-500">
+                <span className="flex items-center gap-1 text-xs font-bold text-emerald-300">
                   <CheckCircle size={12} /> Tersimpan!
                 </span>
               )}
@@ -106,13 +110,13 @@ export default function ManageCourses() {
 
         {/* List */}
         <div className="bento-card overflow-hidden">
-          <div className="p-4 border-b border-[#0f0f0f]">
-            <p className="font-mono text-xs text-[#444]">
+          <div className="border-b border-white/10 p-4">
+            <p className="text-xs font-bold text-slate-500">
               {courses.length} mata kuliah
             </p>
           </div>
           {courses.length === 0 ? (
-            <div className="p-8 text-center font-mono text-sm text-[#333]">
+            <div className="p-8 text-center text-sm font-semibold text-slate-500">
               Belum ada data
             </div>
           ) : (
@@ -120,19 +124,19 @@ export default function ManageCourses() {
               {courses.map((course) => (
                 <li
                   key={course.id}
-                  className="flex items-center justify-between p-4 border-b border-[#0a0a0a] hover:bg-[#0a0a0a] transition-colors"
+                  className="flex items-center justify-between border-b border-white/10 p-4 transition-colors hover:bg-white/[0.03]"
                 >
                   <div>
-                    <p className="font-mono text-sm text-white">
+                    <p className="text-sm font-bold text-white">
                       {course.name}
                     </p>
-                    <p className="font-mono text-xs text-[#333] mt-0.5">
+                    <p className="mt-0.5 text-xs font-semibold text-slate-500">
                       /{course.slug}
                     </p>
                   </div>
                   <button
                     onClick={() => handleDelete(course.id)}
-                    className="p-1.5 text-[#333] hover:text-red-500 transition-colors"
+                    className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
                   >
                     <Trash2 size={14} />
                   </button>

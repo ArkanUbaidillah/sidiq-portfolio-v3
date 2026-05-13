@@ -107,21 +107,25 @@ export default function ManageProjects() {
   ];
 
   return (
-    <div className="p-8">
-      <h1 className="font-display text-xl font-bold text-white mb-6 flex items-center gap-2">
-        <FolderOpen size={20} className="text-sky-500" /> Proyek
-      </h1>
+    <div className="p-4 md:p-8">
+      <div className="mx-auto max-w-6xl">
+      <div className="mb-6">
+        <p className="text-sm font-bold text-sky-200">Portfolio Works</p>
+        <h1 className="mt-1 flex items-center gap-2 font-display text-3xl font-extrabold text-white">
+          <FolderOpen size={24} className="text-sky-200" /> Proyek
+        </h1>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Form */}
         <div className="bento-card p-5">
-          <h2 className="font-mono text-xs text-sky-500 mb-4">
-            // Tambah Proyek
+          <h2 className="mb-4 font-display text-lg font-bold text-white">
+            Tambah Proyek
           </h2>
           <form onSubmit={handleAdd} className="flex flex-col gap-3">
             {fields.map((f) => (
               <div key={f.key}>
-                <label className="font-mono text-xs text-[#444] mb-1 block">
+                <label className="mb-1 block text-xs font-bold text-slate-500">
                   {f.label}
                 </label>
                 <input
@@ -132,7 +136,7 @@ export default function ManageProjects() {
                     setForm({ ...form, [f.key]: e.target.value })
                   }
                   required={f.required}
-                  className="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-3 py-2 font-mono text-sm text-white placeholder-[#333] focus:outline-none focus:border-sky-500 transition-colors"
+                  className="w-full px-3 py-2.5 text-sm"
                 />
               </div>
             ))}
@@ -140,12 +144,12 @@ export default function ManageProjects() {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white font-mono text-xs font-bold rounded-xl hover:bg-sky-500 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-sky-400 px-4 py-2.5 text-xs font-bold text-slate-950 transition-colors hover:bg-sky-300 disabled:opacity-50"
               >
                 <Plus size={13} /> Simpan
               </button>
               {saved && (
-                <span className="flex items-center gap-1 font-mono text-xs text-sky-500">
+                <span className="flex items-center gap-1 text-xs font-bold text-emerald-300">
                   <CheckCircle size={12} /> Tersimpan!
                 </span>
               )}
@@ -155,13 +159,13 @@ export default function ManageProjects() {
 
         {/* List */}
         <div className="bento-card overflow-hidden">
-          <div className="p-4 border-b border-[#0f0f0f]">
-            <p className="font-mono text-xs text-[#444]">
+          <div className="border-b border-white/10 p-4">
+            <p className="text-xs font-bold text-slate-500">
               {projects.length} proyek
             </p>
           </div>
           {projects.length === 0 ? (
-            <div className="p-8 text-center font-mono text-sm text-[#333]">
+            <div className="p-8 text-center text-sm font-semibold text-slate-500">
               Belum ada proyek
             </div>
           ) : (
@@ -169,17 +173,17 @@ export default function ManageProjects() {
               {projects.map((p) => (
                 <li
                   key={p.id}
-                  className="flex items-center justify-between p-4 border-b border-[#0a0a0a] hover:bg-[#0a0a0a] transition-colors"
+                  className="flex items-center justify-between border-b border-white/10 p-4 transition-colors hover:bg-white/[0.03]"
                 >
                   <div>
-                    <p className="font-mono text-sm text-white">{p.title}</p>
-                    <p className="font-mono text-xs text-[#333] mt-0.5 max-w-xs truncate">
+                    <p className="text-sm font-bold text-white">{p.title}</p>
+                    <p className="mt-0.5 max-w-xs truncate text-xs font-semibold text-slate-500">
                       {p.description}
                     </p>
                   </div>
                   <button
                     onClick={() => handleDelete(p.id)}
-                    className="p-1.5 text-[#333] hover:text-red-500 transition-colors"
+                    className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -188,6 +192,7 @@ export default function ManageProjects() {
             </ul>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

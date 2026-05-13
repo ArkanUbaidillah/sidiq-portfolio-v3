@@ -1,12 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
+  Award,
   BookOpen,
   FolderOpen,
-  Award,
-  LogOut,
-  Terminal,
   FlaskConical,
+  LayoutDashboard,
+  LogOut,
+  Sparkles,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -48,19 +48,21 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-56 shrink-0 min-h-screen bg-[#000] border-r border-[#111] flex flex-col">
-      {/* Logo */}
-      <div className="p-5 border-b border-[#111]">
-        <div className="flex items-center gap-2">
-          <Terminal size={16} className="text-sky-500" />
-          <span className="font-mono text-sm font-bold text-sky-500">
-            Admin CMS
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-white/10 bg-slate-950/70 backdrop-blur-xl lg:flex lg:flex-col">
+      <div className="border-b border-white/10 p-5">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-lg border border-sky-300/20 bg-sky-300/10 text-sky-200">
+            <Sparkles size={18} />
           </span>
+          <div>
+            <p className="font-display text-sm font-bold text-white">
+              Admin Studio
+            </p>
+            <p className="text-xs text-slate-500">sidiq.dev CMS</p>
+          </div>
         </div>
-        <p className="font-mono text-xs text-[#333] mt-0.5">sidiq.dev</p>
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 p-3">
         <ul className="flex flex-col gap-1">
           {links.map((link) => (
@@ -68,10 +70,10 @@ export default function AdminSidebar() {
               <NavLink
                 to={link.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-mono text-xs transition-all duration-200 ${
+                  `flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? "bg-sky-500/10 text-sky-500 border border-sky-500/20"
-                      : "text-[#444] hover:text-white hover:bg-[#0a0a0a]"
+                      ? "bg-sky-400 text-slate-950 shadow-lg shadow-sky-950/30"
+                      : "text-slate-400 hover:bg-white/5 hover:text-white"
                   }`
                 }
               >
@@ -83,11 +85,10 @@ export default function AdminSidebar() {
         </ul>
       </nav>
 
-      {/* Logout */}
-      <div className="p-3 border-t border-[#111]">
+      <div className="border-t border-white/10 p-3">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-mono text-xs text-[#444] hover:text-red-500 hover:bg-red-500/5 transition-all"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-slate-400 transition-all hover:bg-rose-500/10 hover:text-rose-300"
         >
           <LogOut size={16} /> Sign Out
         </button>

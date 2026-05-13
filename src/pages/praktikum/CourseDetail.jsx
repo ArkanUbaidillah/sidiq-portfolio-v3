@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, Calendar } from "lucide-react";
+import { ArrowLeft, BookOpen, Calendar, ChevronRight } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
@@ -38,68 +38,78 @@ export default function CourseDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="font-mono text-sky-500 animate-pulse">Loading...</div>
+      <div className="min-h-screen">
+        <Navbar />
+        <main className="mx-auto max-w-4xl px-4 pb-20 pt-28">
+          <div className="mb-8 h-6 w-32 animate-pulse rounded-lg bg-white/10" />
+          <div className="mb-8 h-36 animate-pulse rounded-lg bg-white/10" />
+          <div className="space-y-3">
+            <div className="h-20 animate-pulse rounded-lg bg-white/10" />
+            <div className="h-20 animate-pulse rounded-lg bg-white/10" />
+          </div>
+        </main>
       </div>
     );
   }
 
   if (!course) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <p className="font-mono text-[#444] mb-4">
-            Mata kuliah tidak ditemukan.
-          </p>
-          <Link
-            to="/"
-            className="font-mono text-xs text-sky-500 hover:underline"
-          >
-            ← Kembali ke Home
-          </Link>
-        </div>
+      <div className="min-h-screen">
+        <Navbar />
+        <main className="mx-auto flex min-h-[70vh] max-w-4xl items-center justify-center px-4">
+          <div className="bento-card p-8 text-center">
+            <p className="mb-4 text-sm font-semibold text-slate-400">
+              Mata kuliah tidak ditemukan.
+            </p>
+            <Link to="/" className="text-sm font-bold text-sky-200">
+              Kembali ke Home
+            </Link>
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <Navbar />
-      <main className="max-w-4xl mx-auto px-4 pt-28 pb-20">
+      <main className="mx-auto max-w-4xl px-4 pb-20 pt-28">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <Link
             to="/#praktikum"
-            className="flex items-center gap-2 font-mono text-xs text-[#444] hover:text-sky-500 transition-colors mb-8"
+            className="mb-8 flex items-center gap-2 text-sm font-semibold text-slate-400 transition-colors hover:text-white"
           >
             <ArrowLeft size={14} /> Kembali
           </Link>
 
-          <div className="bento-card p-6 mb-8">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-                <BookOpen size={18} className="text-sky-500" />
+          <div className="bento-card mb-8 p-6">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-lg bg-sky-400/10 text-sky-200">
+                <BookOpen size={19} />
               </div>
               <div>
-                <h1 className="font-display text-xl font-bold text-white">
+                <h1 className="font-display text-2xl font-extrabold text-white">
                   {course.name}
                 </h1>
-                <p className="font-mono text-xs text-[#444]">
+                <p className="text-sm font-semibold text-slate-500">
                   {reports.length} laporan tersedia
                 </p>
               </div>
             </div>
             {course.description && (
-              <p className="text-[#666] text-sm">{course.description}</p>
+              <p className="text-sm leading-relaxed text-slate-400">
+                {course.description}
+              </p>
             )}
           </div>
 
           <div className="space-y-3">
             {reports.length === 0 ? (
               <div className="bento-card p-10 text-center">
-                <p className="font-mono text-sm text-[#444]">
+                <p className="text-sm font-semibold text-slate-400">
                   Belum ada laporan untuk mata kuliah ini.
                 </p>
               </div>
@@ -109,23 +119,23 @@ export default function CourseDetail() {
                   key={report.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
+                  transition={{ delay: i * 0.04 }}
                 >
                   <Link
                     to={`/praktikum/${courseSlug}/${report.slug}`}
-                    className="bento-card p-4 flex items-center justify-between group block"
+                    className="bento-card flex items-center justify-between p-4 transition-colors group"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="font-mono text-xs text-sky-500 w-14 shrink-0">
-                        Week {report.week_number ?? "-"}
+                      <span className="w-16 shrink-0 rounded-lg bg-sky-400/10 px-3 py-2 text-center text-xs font-bold text-sky-200">
+                        W{report.week_number ?? "-"}
                       </span>
                       <div>
-                        <p className="font-display font-medium text-white group-hover:text-sky-500 transition-colors">
+                        <p className="font-display font-bold text-white transition-colors group-hover:text-sky-200">
                           {report.title}
                         </p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <Calendar size={11} className="text-[#333]" />
-                          <p className="font-mono text-xs text-[#333]">
+                        <div className="mt-1 flex items-center gap-2">
+                          <Calendar size={12} className="text-slate-600" />
+                          <p className="text-xs font-semibold text-slate-500">
                             {report.created_at
                               ? new Date(report.created_at).toLocaleDateString(
                                   "id-ID",
@@ -135,9 +145,9 @@ export default function CourseDetail() {
                         </div>
                       </div>
                     </div>
-                    <ArrowLeft
-                      size={14}
-                      className="text-[#333] group-hover:text-sky-500 rotate-180 group-hover:translate-x-1 transition-all"
+                    <ChevronRight
+                      size={17}
+                      className="text-slate-500 transition-all group-hover:translate-x-1 group-hover:text-sky-200"
                     />
                   </Link>
                 </motion.div>
